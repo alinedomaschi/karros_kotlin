@@ -1,3 +1,4 @@
+
 plugins {
     id("org.jetbrains.kotlin.jvm") version "1.4.32"
     id("org.jetbrains.kotlin.kapt") version "1.4.32"
@@ -5,11 +6,17 @@ plugins {
     id("io.micronaut.application") version "1.5.0"
     id("org.jetbrains.kotlin.plugin.allopen") version "1.4.32"
     id("org.jetbrains.kotlin.plugin.jpa") version "1.4.32"
+
+}
+
+allOpen{
+    annotation("io.micronaut.http.annotation.Controller")
 }
 
 version = "0.1"
-group = "br.com.zup.edu"
+group = "br.com.zup"
 
+kotlinVersion=project.properties.get("kotlinVersion")
 repositories {
     mavenCentral()
 }
@@ -19,7 +26,7 @@ micronaut {
     testRuntime("junit5")
     processing {
         incremental(true)
-        annotations("br.com.zup.edu.*")
+        annotations("br.com.zup.*")
     }
 }
 
@@ -39,11 +46,24 @@ dependencies {
 
     runtimeOnly("com.fasterxml.jackson.module:jackson-module-kotlin")
 
+    runtimeOnly("mysql:mysql-connector-java")
+
+    //jpa
+    runtime("io.micronaut.sql:micronaut-jdbc-hikari")
+    implementation("io.micronaut.data:micronaut-data-hibernate-jpa")
+    implementation("io.micronaut.xml:micronaut-jackson-xml")
+
+    //Testes
+    testAnnotationProcessor("io.micronaut:micronaut-inject-java")
+    testImplementation("io.micronaut:micronaut-http-client")
+    testImplementation("org.junit.jupiter:junit-jupiter-api")
+    testImplementation("org.mockito:mockito-core:3.8.0")
+    testImplementation("io.micronaut.test:micronaut-test-junit5:2.3.2")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.7,0")
 }
 
-
 application {
-    mainClass.set("br.com.zup.edu.ApplicationKt")
+    mainClass.set("br.com.zup.ApplicationKt")
 }
 java {
     sourceCompatibility = JavaVersion.toVersion("11")
@@ -60,6 +80,5 @@ tasks {
             jvmTarget = "11"
         }
     }
-
 
 }

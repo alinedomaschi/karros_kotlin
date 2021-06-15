@@ -12,7 +12,7 @@ import javax.validation.Valid
 class CarrosController {
 
     @Post("/api/carros")
-    fun criar(@Body @Valid carro:Carro) : HttpResponse<Any>{
+    fun criar(@Body @Valid carro:CarroNew) : HttpResponse<Any>{
         return HttpResponse.ok(carro)
     }
 }
